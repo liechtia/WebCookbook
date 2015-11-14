@@ -11,7 +11,6 @@ namespace WebCookbook.Models
         public string Measurement { get; set; }
         public int AmountPerInitialServing { get; set; }
         public string IngredientName { get; set; }
-        public int RecId { get; set; }
         public virtual Recipe Recipe { get; set; }
     }
 }

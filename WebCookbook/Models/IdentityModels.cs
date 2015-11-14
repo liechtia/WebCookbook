@@ -39,8 +39,7 @@ namespace WebCookbook.Models
 
             modelBuilder.Entity<Ingredient>()
                 .HasRequired(i => i.Recipe)
-                .WithMany(r => r.Ingredients)
-                .HasForeignKey(i => i.RecId);
+                .WithMany(r => r.Ingredients);
         }
     }
 }

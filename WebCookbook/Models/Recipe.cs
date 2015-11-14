@@ -13,6 +13,7 @@ namespace WebCookbook.Models
         }
 
         public int RecipeId { get; set; }
+        public string Title { get; set; }
         public int InitialServings { get; set; }
         public string Instructions { get; set; }
         public ApplicationUser User { get; set; }
