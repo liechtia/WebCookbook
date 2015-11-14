@@ -6,7 +6,7 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     <div class="form-horizontal">
         <h4>Recipe</h4>
@@ -21,30 +21,31 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Recipe.InitialServings, htmlAttributes: new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.Recipe.InitialServings, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Recipe.InitialServings, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Recipe.InitialServings, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.Recipe.InitialServings, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Recipe.InitialServings, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div id="editorRows">
+        <div class="form-group">
+            @Html.Label("Ingredients: ")
+            <div id="editorRows">
                 @{ Html.RenderPartial("CreateIngredient"); }
-        </div>
+            </div>
+            @*todo: remove lables from the ingredient form for all but the first partials... *@
+            @Html.ActionLink("Add another...", "AddIngredient", null, new {id = "addItem"})
 
-        @Html.ActionLink("Add another...", "AddIngredient", null, new { id = "addItem" })
-
-        <script type="text/javascript">
-                $("#addItem").click(function () {
+            <script>
+                $("#addItem").click(function() {
                     $.ajax({
                         url: this.href,
                         cache: false,
-                        success: function (html) { $("#editorRows").append(html); }
+                        success: function(html) { $("#editorRows").append(html); }
                     });
                     return false;
                 });
             </script>
-
+        </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Recipe.Instructions, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
