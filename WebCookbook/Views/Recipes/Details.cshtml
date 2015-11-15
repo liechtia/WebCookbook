@@ -33,7 +33,38 @@
         <dd>
             @Html.DisplayFor(model => model.Instructions)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredients)
+        </dt>
+        <dd>
+            <table>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Ingredients.FirstOrDefault().AmountPerInitialServing)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Ingredients.FirstOrDefault().Measurement)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Ingredients.FirstOrDefault().IngredientName)
+                    </td>
+                </tr>
+                @foreach (var item in Model.Ingredients)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AmountPerInitialServing)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Measurement)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IngredientName)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
         <dt>
             Picture
         </dt>
