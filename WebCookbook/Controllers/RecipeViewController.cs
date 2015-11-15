@@ -33,6 +33,7 @@ namespace WebCookbook.Controllers
         // GET: RecipeView/Create
         public ActionResult Create()
         {
+            RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
             return View();
         }
 
