@@ -9,6 +9,29 @@ namespace WebCookbook.Models
     public class RecipeViewModel
     {
         public Recipe Recipe { get; set; }
-        public IList<Ingredient> Ingredients { get; set; } 
+        public IList<Ingredient> Ingredients { get; set; }
+
+        public class IngredientCounter
+        {
+            private static IngredientCounter instance;
+            public int IngredientCount { get; set; }
+
+            private IngredientCounter()
+            {
+                IngredientCount = 0;
+            }
+
+            public static IngredientCounter Instance
+            {
+                get
+                {
+                    if (instance == null)
+                    {
+                        instance = new IngredientCounter();
+                    }
+                    return instance;
+                }
+            }
+        }
     }
 }

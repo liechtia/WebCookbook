@@ -102,7 +102,9 @@ namespace WebCookbook.Controllers
         //}
 
         public PartialViewResult AddIngredient(RecipeViewModel model)
-        {        
+        {
+            RecipeViewModel.IngredientCounter.Instance.IngredientCount =
+                RecipeViewModel.IngredientCounter.Instance.IngredientCount + 1;
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
     }
