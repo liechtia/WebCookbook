@@ -21,6 +21,8 @@ namespace WebCookbook.Models
         [DataType(DataType.MultilineText)]
         public string Instructions { get; set; }
 
+        public string PictureUrl { get; set; }
+
         public ApplicationUser User { get; set; }
 
         public virtual ICollection<Ingredient> Ingredients { get; set; }
