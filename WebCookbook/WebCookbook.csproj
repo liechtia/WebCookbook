@@ -252,9 +252,11 @@
     <Content Include="Views\Ingredients\Create.cshtml" />
     <Content Include="Views\RecipeView\Create.cshtml" />
     <Content Include="Views\Recipes\Create.cshtml" />
+    <Content Include="Views\Recipes\PictureUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -113,6 +114,39 @@ namespace WebCookbook.Controllers
             Recipe recipe = db.Recipes.Find(id);
             db.Recipes.Remove(recipe);
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult PictureUpload(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Recipe recipe = db.Recipes.Find(id);
+            if (recipe == null)
+            {
+                return HttpNotFound();
+            }
+            return View(recipe);
+        }
+
+        [HttpPost]
+        public ActionResult PictureUpload(int id, HttpPostedFileBase file)
+        {
+            if(file != null)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var path = Path.Combine(Server.MapPath("~/Images"), fileName);
+                file.SaveAs(path);
+                Recipe recipe = db.Recipes.Find(id);
+                if(recipe != null)
+                {
+                    recipe.PictureUrl = "/Images/" + fileName;
+                    db.SaveChanges();
+                }
+            }
             return RedirectToAction("Index");
         }
 
