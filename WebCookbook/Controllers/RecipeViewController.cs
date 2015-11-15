@@ -49,8 +49,6 @@ namespace WebCookbook.Controllers
                     IngredientsController.Create(ingredient);
                 }
 
-                RecipesController.Create(completeRecipe.Recipe);
-
                 return RedirectToAction("Index", "Recipes");
             }
             catch
