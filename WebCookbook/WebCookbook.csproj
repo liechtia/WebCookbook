@@ -180,7 +180,7 @@
     <Compile Include="Models\Ingredient.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Recipe.cs" />
-    <Compile Include="Models\RecipesViewModel.cs" />
+    <Compile Include="Models\RecipeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -244,14 +244,16 @@
     <Content Include="Views\Recipes\Details.cshtml" />
     <Content Include="Views\Recipes\Edit.cshtml" />
     <Content Include="Views\Recipes\Index.cshtml" />
-    <Content Include="Views\Recipes\CreateIngredient.cshtml" />
-    <Content Include="Views\Recipes\DeleteIngredient.cshtml" />
-    <Content Include="Views\Recipes\DetailsIngredient.cshtml" />
-    <Content Include="Views\Recipes\EditIngredient.cshtml" />
-    <Content Include="Views\Recipes\IndexIngredient.cshtml" />
+    <Content Include="Views\Ingredients\Delete.cshtml" />
+    <Content Include="Views\Ingredients\Details.cshtml" />
+    <Content Include="Views\Ingredients\Edit.cshtml" />
+    <Content Include="Views\Ingredients\Index.cshtml" />
+    <Content Include="Views\Ingredients\CreatePartial.cshtml" />
+    <Content Include="Views\Ingredients\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\RecipeView\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

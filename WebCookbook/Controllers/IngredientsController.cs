@@ -15,13 +15,13 @@ namespace WebCookbook.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Ingredients
-        public ActionResult IndexIngredient()
+        public ActionResult Index()
         {
             return View(db.Ingredients.ToList());
         }
 
         // GET: Ingredients/Details/5
-        public ActionResult DetailsIngredient(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -36,7 +36,7 @@ namespace WebCookbook.Controllers
         }
 
         // GET: Ingredients/Create
-        public ActionResult CreateIngredient()
+        public ActionResult Create()
         {
             return View();
         }
@@ -46,20 +46,20 @@ namespace WebCookbook.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateIngredient([Bind(Include = "IngredientId,Measurement,AmountPerInitialServing,IngredientName")] Ingredient ingredient)
+        public ActionResult Create([Bind(Include = "IngredientId,Measurement,AmountPerInitialServing,IngredientName")] Ingredient ingredient)
         {
             if (ModelState.IsValid)
             {
                 db.Ingredients.Add(ingredient);
                 db.SaveChanges();
-                return RedirectToAction("IndexIngredient");
+                return RedirectToAction("Index");
             }
 
             return View(ingredient);
         }
 
         // GET: Ingredients/Edit/5
-        public ActionResult EditIngredient(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -78,19 +78,19 @@ namespace WebCookbook.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditIngredient([Bind(Include = "IngredientId,Measurement,AmountPerInitialServing,IngredientName")] Ingredient ingredient)
+        public ActionResult Edit([Bind(Include = "IngredientId,Measurement,AmountPerInitialServing,IngredientName")] Ingredient ingredient)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(ingredient).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("IndexIngredient");
+                return RedirectToAction("Index");
             }
             return View(ingredient);
         }
 
         // GET: Ingredients/Delete/5
-        public ActionResult DeleteIngredient(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -112,7 +112,7 @@ namespace WebCookbook.Controllers
             Ingredient ingredient = db.Ingredients.Find(id);
             db.Ingredients.Remove(ingredient);
             db.SaveChanges();
-            return RedirectToAction("IndexIngredient");
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

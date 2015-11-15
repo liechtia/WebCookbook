@@ -119,7 +119,7 @@ namespace WebCookbook.Controllers
         [HttpGet, ActionName("AddIngredient")]
         public ActionResult AddIngredient()
         {
-            return PartialView("CreateIngredient");
+            return PartialView("~/Views/Ingredients/CreatePartial.cshtml");
         }
 
         protected override void Dispose(bool disposing)
