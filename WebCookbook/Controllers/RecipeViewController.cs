@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebCookbook.Models;
 
 namespace WebCookbook.Controllers
 {
     public class RecipeViewController : Controller
     {
+        public RecipesController RecipesController { get; set; }
+        public IngredientsController IngredientsController { get; set; }
+
+        public RecipeViewController()
+        {
+          RecipesController = DependencyResolver.Current.GetService<RecipesController>();
+          IngredientsController = DependencyResolver.Current.GetService<IngredientsController>();
+        }
+
         // GET: RecipeView
         public ActionResult Index()
         {
@@ -28,13 +38,20 @@ namespace WebCookbook.Controllers
 
         // POST: RecipeView/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(RecipeViewModel completeRecipe)
         {
             try
             {
-                // TODO: Add insert logic here
+                foreach (Ingredient ingredient in completeRecipe.Ingredients)
+                {
+                    ingredient.Recipe = completeRecipe.Recipe;
+                    completeRecipe.Recipe.Ingredients.Add(ingredient);
+                    IngredientsController.Create(ingredient);
+                }
 
-                return RedirectToAction("Index", "RecipeView");
+                RecipesController.Create(completeRecipe.Recipe);
+
+                return RedirectToAction("Index", "Recipes");
             }
             catch
             {
@@ -86,9 +103,11 @@ namespace WebCookbook.Controllers
         //    }
         //}
 
-        public ActionResult AddIngredient()
-        {
-            return PartialView("~/Views/Ingredients/CreatePartial.cshtml");
+        public PartialViewResult AddIngredient()
+        {        
+            Ingredient ingredient = new Ingredient();
+
+            return PartialView("~/Views/Ingredients/CreatePartial.cshtml", ingredient);
         }
     }
 }
