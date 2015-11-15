@@ -116,12 +116,6 @@ namespace WebCookbook.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet, ActionName("AddIngredient")]
-        public ActionResult AddIngredient()
-        {
-            return PartialView("~/Views/Ingredients/CreatePartial.cshtml");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
