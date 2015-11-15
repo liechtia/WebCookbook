@@ -31,14 +31,14 @@
         <div class="form-group">
             @Html.Label("Ingredients: ")
             <div id="editorRows">
-                                @{
-                    //Html.RenderAction("AddIngredient"));
-                    Html.RenderPartial("~/Views/Ingredients/CreatePartial.cshtml");
-                                }
+            @{
+               //Html.RenderAction("AddIngredient"));
+               Html.RenderPartial("~/Views/Ingredients/CreatePartial.cshtml", Model);
+            }
             </div>
             @*todo: remove lables from the ingredient form for all but the first partials... *@
             @*todo: save ingredient *@
-            @Html.ActionLink("Add another...", "AddIngredient", null, new { id = "addItem" })
+            @Html.ActionLink("Add another...", "AddIngredient", null, new { id = "addItem", model = Model})
 
             <script>
                 $("#addItem").click(function() {

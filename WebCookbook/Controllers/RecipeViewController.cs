@@ -103,11 +103,9 @@ namespace WebCookbook.Controllers
         //    }
         //}
 
-        public PartialViewResult AddIngredient()
+        public PartialViewResult AddIngredient(RecipeViewModel model)
         {        
-            Ingredient ingredient = new Ingredient();
-
-            return PartialView("~/Views/Ingredients/CreatePartial.cshtml", ingredient);
+            return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
     }
 }
