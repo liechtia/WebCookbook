@@ -11,48 +11,12 @@ namespace WebCookbook.Controllers
 {
     public class RecipeViewController : Controller
     {
-        //public RecipesController RecipesController { get; set; }
-        //public IngredientsController IngredientsController { get; set; }
         private ApplicationDbContext db = new ApplicationDbContext();
-
-        public RecipeViewController()
-        {
-          //RecipesController = DependencyResolver.Current.GetService<RecipesController>();
-          //IngredientsController = DependencyResolver.Current.GetService<IngredientsController>();
-        }
-
-        //[HttpPost]
-        //public ActionResult Index(RecipeViewModel viewModel)
-        //{
-        //    // code to save the data in the database or whatever you want to do with the data coming from the View
-        //}
 
         // GET: RecipeView
         public ActionResult Index()
         {
-            //IList<RecipeViewModel> model = new List<RecipeViewModel>();
-
-            //foreach (Recipe recipe in db.Recipes)
-            //{
-            //    model.Add(new RecipeViewModel()
-            //    {
-            //        Recipe = recipe,
-            //        Ingredients = recipe.Ingredients.ToList()
-            //    });
-            //}
-
-
-
-            //var model = new PersonViewModel()
-            //{
-                //ListboxData = data.Select(s => new SelectListItem { Value = s.PersonId.ToString(), 
-            //Text = s.PersonId.ToString() }).AsEnumerable();
-            //};
-
-
             return View(db.Recipes);
-
-            //return View("Index");
         }
 
         // GET: RecipeView/Create
