@@ -15,11 +15,11 @@ namespace WebCookbook.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Recipes
-        public ActionResult Index()
-        {
-            return View(db.Recipes.ToList());
-        }
+        //// GET: Recipes
+        //public ActionResult Index()
+        //{
+        //    return View(db.Recipes.ToList());
+        //}
 
         //        // GET: Recipes/Details/5
         //        public ActionResult Details(int? id)

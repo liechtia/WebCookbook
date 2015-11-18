@@ -243,7 +243,7 @@
     <Content Include="Views\RecipeView\Delete.cshtml" />
     <Content Include="Views\RecipeView\Details.cshtml" />
     <Content Include="Views\RecipeView\Edit.cshtml" />
-    <Content Include="Views\Recipes\Index.cshtml" />
+    <Content Include="Views\RecipeView\Index.cshtml" />
     <Content Include="Views\Ingredients\CreatePartial.cshtml" />
     <Content Include="Views\RecipeView\Create.cshtml" />
     <Content Include="Views\RecipeView\PictureUpload.cshtml" />
@@ -251,6 +251,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
+    <Folder Include="Views\Recipes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
