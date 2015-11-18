@@ -92,7 +92,9 @@ namespace WebCookbook.Controllers
         // GET: RecipeView/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Recipe recipe = db.Recipes.Find(id);
+            RecipeViewModel model = new RecipeViewModel() { Recipe = recipe, Ingredients = recipe.Ingredients.ToList() };
+            return View(model);
         }
 
         // POST: RecipeView/Edit/5
@@ -123,8 +125,9 @@ namespace WebCookbook.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
+                Recipe recipe = db.Recipes.Find(id);
+                db.Recipes.Remove(recipe);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
