@@ -1,4 +1,4 @@
-﻿@model WebCookbook.Models.Recipe
+﻿@model WebCookbook.Models.RecipeViewModel
 
 @{
     ViewBag.Title = "Delete";
@@ -12,27 +12,27 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Recipe.Title)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.Recipe.Title)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.InitialServings)
+            @Html.DisplayNameFor(model => model.Recipe.InitialServings)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.InitialServings)
+            @Html.DisplayFor(model => model.Recipe.InitialServings)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Instructions)
+            @Html.DisplayNameFor(model => model.Recipe.Instructions)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Instructions)
+            @Html.DisplayFor(model => model.Recipe.Instructions)
         </dd>
 
     </dl>
@@ -42,7 +42,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "Index", "Recipes")
         </div>
     }
 </div>

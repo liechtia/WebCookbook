@@ -240,19 +240,13 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Recipes\Delete.cshtml" />
-    <Content Include="Views\Recipes\Details.cshtml" />
-    <Content Include="Views\Recipes\Edit.cshtml" />
+    <Content Include="Views\RecipeView\Delete.cshtml" />
+    <Content Include="Views\RecipeView\Details.cshtml" />
+    <Content Include="Views\RecipeView\Edit.cshtml" />
     <Content Include="Views\Recipes\Index.cshtml" />
-    <Content Include="Views\Ingredients\Delete.cshtml" />
-    <Content Include="Views\Ingredients\Details.cshtml" />
-    <Content Include="Views\Ingredients\Edit.cshtml" />
-    <Content Include="Views\Ingredients\Index.cshtml" />
     <Content Include="Views\Ingredients\CreatePartial.cshtml" />
-    <Content Include="Views\Ingredients\Create.cshtml" />
     <Content Include="Views\RecipeView\Create.cshtml" />
-    <Content Include="Views\Recipes\Create.cshtml" />
-    <Content Include="Views\Recipes\PictureUpload.cshtml" />
+    <Content Include="Views\RecipeView\PictureUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
