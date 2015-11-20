@@ -1,0 +1,32 @@
+﻿@using WebCookbook.Models
+@model WebCookbook.Models.RecipeViewModel
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@*todo: check what's up with the routing of the createingredient, deleteingredient and so on views... *@
+<table>
+    <tbody>
+    <tr>
+        <td>
+            @Html.Label("Amount:")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ingredients[RecipeViewModel.IngredientCounter.Instance.IngredientCount].AmountPerInitialServing, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Ingredients[RecipeViewModel.IngredientCounter.Instance.IngredientCount].AmountPerInitialServing, "", new { @class = "text-danger" })
+            </div>
+        </td>
+        <td>
+            @Html.Label("Measurement")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ingredients[RecipeViewModel.IngredientCounter.Instance.IngredientCount].Measurement, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Ingredients[RecipeViewModel.IngredientCounter.Instance.IngredientCount].Measurement, "", new {@class = "text-danger"})
+            </div>
+        </td>
+        <td>
+            @Html.Label("Ingredient")
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ingredients[RecipeViewModel.IngredientCounter.Instance.IngredientCount].IngredientName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Ingredients[RecipeViewModel.IngredientCounter.Instance.IngredientCount].IngredientName, "", new {@class = "text-danger"})
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

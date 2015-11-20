@@ -25,9 +25,21 @@ namespace WebCookbook.Models
         {
         }
 
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Ingredient>()
+                .HasRequired(i => i.Recipe)
+                .WithMany(r => r.Ingredients);
         }
     }
 }
