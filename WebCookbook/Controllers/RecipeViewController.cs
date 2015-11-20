@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -51,6 +52,7 @@ namespace WebCookbook.Controllers
                 }
 
                 PictureUpload(completeRecipe, file);
+                RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -63,22 +65,37 @@ namespace WebCookbook.Controllers
         // GET: RecipeView/Edit/5
         public ActionResult Edit(int id)
         {
+            RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
             return View(GetRecipeViewModelByRecipeId(id));
         }
 
         // POST: RecipeView/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, FormCollection collection, HttpPostedFileBase file)
         {
             try
             {
-                // TODO: Add update logic here
+                RecipeViewModel model = GetRecipeViewModelByRecipeId(id);
+
+                if (ModelState.IsValid)
+                {
+                    db.Entry(model.Recipe).State = EntityState.Modified;
+                    foreach (Ingredient ingredient in model.Ingredients)
+                    {
+                        db.Entry(ingredient).State = EntityState.Modified;
+                    }
+
+                    PictureUpload(model, file);
+                    RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View(GetRecipeViewModelByRecipeId(id));
             }
         }
 
@@ -127,8 +144,7 @@ namespace WebCookbook.Controllers
 
         public PartialViewResult AddIngredient(RecipeViewModel model)
         {
-            RecipeViewModel.IngredientCounter.Instance.IngredientCount =
-                RecipeViewModel.IngredientCounter.Instance.IngredientCount + 1;
+            RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
     }
