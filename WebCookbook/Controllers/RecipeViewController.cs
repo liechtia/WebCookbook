@@ -43,12 +43,13 @@ namespace WebCookbook.Controllers
                     }
                 }
 
+                PictureUpload(completeRecipe, file);
                 db.SaveChanges();
-                PictureUpload(completeRecipe.Recipe.RecipeId, file);
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception e)
             {
+                var exception = e;
                 return View();
             }
         }
@@ -119,43 +120,18 @@ namespace WebCookbook.Controllers
         }
 
         [HttpPost]
-        public ActionResult PictureUpload(int id, HttpPostedFileBase file)
+        public void PictureUpload(RecipeViewModel model, HttpPostedFileBase file)
         {
             if (file != null)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var path = Path.Combine(Server.MapPath("~/Images"), fileName);
-                file.SaveAs(path);
-                Recipe recipe = db.Recipes.Find(id);
-                if (recipe != null)
-                {
-                    recipe.PictureUrl = "/Images/" + fileName;
-                    db.SaveChanges();
-                }
+                string fileName = string.Format(Guid.NewGuid() + Path.GetExtension(file.FileName));
+                string uploadDir = "/Images";
+                var imagePath = Path.Combine(Server.MapPath(uploadDir), fileName);
+                var imageUrl = Path.Combine(uploadDir, fileName);
+                file.SaveAs(imagePath);
+                model.Recipe.PictureUrl = imageUrl;
             }
-            return RedirectToAction("Index");
         }
-
-        //public ActionResult PictureUpload(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Recipe recipe = db.Recipes.Find(id);
-
-        //    if (recipe == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    RecipeViewModel model = new RecipeViewModel
-        //    {
-        //        Recipe = recipe
-        //    };
-            
-        //    return View(model);
-        //}
 
         public PartialViewResult AddIngredient(RecipeViewModel model)
         {
