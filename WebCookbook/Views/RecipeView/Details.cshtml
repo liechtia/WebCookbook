@@ -27,8 +27,11 @@
 
         <dd>
             @Html.DisplayFor(model => model.Recipe.InitialServings)
+            <input type="number" id="initialServingsId" value=@Model.Recipe.InitialServings/>
             <button type="button"
-                    onclick="document.getElementById('toChange').innerHTML = '123'">
+                    onclick="var initialServ = document.getElementById('initialServingsId').value;
+    test2 = document.getElementById('amountID').innerText;
+    document.getElementById('amountID').innerHTML = initialServ * test2">
                 Change Values
             </button>
         </dd>
@@ -47,20 +50,20 @@
             <table>
                 <tr>
                     <td>
-                        @Html.DisplayNameFor(model => model.Ingredients.FirstOrDefault().AmountPerInitialServing)
+                        Amount per initial serving: 
                     </td>
                     <td>
-                        @Html.DisplayNameFor(model => model.Ingredients.FirstOrDefault().Measurement)
+                        Measurement: 
                     </td>
                     <td>
-                        @Html.DisplayNameFor(model => model.Ingredients.FirstOrDefault().IngredientName)
+                        Ingredient name: 
                     </td>
                 </tr>
                 @foreach (var item in Model.Ingredients)
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AmountPerInitialServing)
+                        <td id="amountID">
+                            @item.AmountPerInitialServing
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Measurement)
