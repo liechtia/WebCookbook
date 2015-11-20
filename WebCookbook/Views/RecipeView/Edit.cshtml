@@ -5,7 +5,11 @@
 }
 
 <h2>Edit</h2>
-@Html.Partial("CreateEditPartial", Model);
+@using (Html.BeginForm("Edit", "RecipeView", FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+   @Html.Partial("CreateEditPartial", Model)
+}
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
