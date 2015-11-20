@@ -1,6 +1,7 @@
 ﻿@model WebCookbook.Models.RecipeViewModel
 <script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
-@using (Html.BeginForm())
+@*todo: create and edit*@ 
+@using (Html.BeginForm("Create", "RecipeView", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
@@ -53,13 +54,19 @@
             </div>
         </div>
 
+        <div>
+            @Html.LabelFor(m => m.ImageUpload)
+            @Html.HiddenFor(m => m.ImageUpload)
+            <input type="file" name="File" />
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
-                    }
+}
 
 <div>
     @Html.ActionLink("Back to List", "Index")

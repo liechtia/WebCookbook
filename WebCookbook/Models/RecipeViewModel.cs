@@ -11,10 +11,16 @@ namespace WebCookbook.Models
         public Recipe Recipe { get; set; }
         public IList<Ingredient> Ingredients { get; set; }
 
+        [DataType(DataType.Upload)]
+        public HttpPostedFileBase ImageUpload { get; set; }
+
         public class IngredientCounter
         {
             private static IngredientCounter instance;
             public int IngredientCount { get; set; }
+
+            [DataType(DataType.Upload)]
+            HttpPostedFileBase ImageUpload { get; set; }
 
             private IngredientCounter()
             {

@@ -21,6 +21,7 @@ namespace WebCookbook.Models
         [DataType(DataType.MultilineText)]
         public string Instructions { get; set; }
 
+        [DataType(DataType.ImageUrl)]
         public string PictureUrl { get; set; }
 
         public ApplicationUser User { get; set; }

@@ -23,12 +23,12 @@ namespace WebCookbook.Controllers
         public ActionResult Create()
         {
             RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
-            return View();
+            return View(new RecipeViewModel());
         }
 
         // POST: RecipeView/Create
         [HttpPost]
-        public ActionResult Create(RecipeViewModel completeRecipe)
+        public ActionResult Create(RecipeViewModel completeRecipe, HttpPostedFileBase file)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace WebCookbook.Controllers
                 }
 
                 db.SaveChanges();
-
+                PictureUpload(completeRecipe.Recipe.RecipeId, file);
                 return RedirectToAction("Index");
             }
             catch
@@ -136,26 +136,26 @@ namespace WebCookbook.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult PictureUpload(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Recipe recipe = db.Recipes.Find(id);
+        //public ActionResult PictureUpload(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Recipe recipe = db.Recipes.Find(id);
 
-            if (recipe == null)
-            {
-                return HttpNotFound();
-            }
+        //    if (recipe == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            RecipeViewModel model = new RecipeViewModel
-            {
-                Recipe = recipe
-            };
+        //    RecipeViewModel model = new RecipeViewModel
+        //    {
+        //        Recipe = recipe
+        //    };
             
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         public PartialViewResult AddIngredient(RecipeViewModel model)
         {
