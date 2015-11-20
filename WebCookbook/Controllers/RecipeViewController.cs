@@ -13,6 +13,13 @@ namespace WebCookbook.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        private RecipeViewModel GetRecipeViewModelByRecipeId(int? id)
+        {
+            Recipe recipe = db.Recipes.Find(id);
+            RecipeViewModel model = new RecipeViewModel() { Recipe = recipe, Ingredients = recipe.Ingredients.ToList() };
+            return model;
+        }
+
         // GET: RecipeView
         public ActionResult Index()
         {
@@ -47,9 +54,8 @@ namespace WebCookbook.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch(Exception e)
+            catch
             {
-                var exception = e;
                 return View();
             }
         }
@@ -57,9 +63,7 @@ namespace WebCookbook.Controllers
         // GET: RecipeView/Edit/5
         public ActionResult Edit(int id)
         {
-            Recipe recipe = db.Recipes.Find(id);
-            RecipeViewModel model = new RecipeViewModel() { Recipe = recipe, Ingredients = recipe.Ingredients.ToList() };
-            return View(model);
+            return View(GetRecipeViewModelByRecipeId(id));
         }
 
         // POST: RecipeView/Edit/5
@@ -81,7 +85,7 @@ namespace WebCookbook.Controllers
         // GET: RecipeView/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(GetRecipeViewModelByRecipeId(id));
         }
 
         // POST: RecipeView/Delete/5
@@ -97,26 +101,14 @@ namespace WebCookbook.Controllers
             }
             catch
             {
-                return View();
+                return View(GetRecipeViewModelByRecipeId(id));
             }
         }
 
         // GET: Recipes/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Recipe recipe = db.Recipes.Find(id);
-
-            if (recipe == null)
-            {
-                return HttpNotFound();
-            }
-
-            RecipeViewModel model = new RecipeViewModel() { Recipe = recipe, Ingredients = recipe.Ingredients.ToList()};
-            return View(model);
+            return View(GetRecipeViewModelByRecipeId(id));
         }
 
         [HttpPost]

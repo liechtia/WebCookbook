@@ -35,10 +35,9 @@
             @Html.DisplayFor(modelItem => item.Instructions)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", "RecipeView",new { id=item.RecipeId }, null) |
+            @Html.ActionLink("Edit", "Edit", "RecipeView", new { id=item.RecipeId }, null) |
             @Html.ActionLink("Details", "Details", "RecipeView", new { id=item.RecipeId }, null) |
-            @Html.ActionLink("Delete", "Delete", "RecipeView",new { id=item.RecipeId }, null) |
-            @Html.ActionLink("PictureUpload", "PictureUpload", "RecipeView", new { id = item.RecipeId}, null)
+            @Html.ActionLink("Delete", "Delete", "RecipeView", new { id=item.RecipeId }, null) |
         </td>
     </tr>
 }
