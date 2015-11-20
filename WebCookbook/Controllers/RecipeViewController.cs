@@ -71,31 +71,38 @@ namespace WebCookbook.Controllers
 
         // POST: RecipeView/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection, HttpPostedFileBase file)
+        public ActionResult Edit(RecipeViewModel model, HttpPostedFileBase file)
         {
             try
             {
-                RecipeViewModel model = GetRecipeViewModelByRecipeId(id);
+                IList<Ingredient> ingredients = model.Ingredients;
+                Recipe recipe = model.Recipe;
 
-                if (ModelState.IsValid)
-                {
-                    db.Entry(model.Recipe).State = EntityState.Modified;
-                    foreach (Ingredient ingredient in model.Ingredients)
-                    {
-                        db.Entry(ingredient).State = EntityState.Modified;
-                    }
+                var recipeViewModelByRecipeId = GetRecipeViewModelByRecipeId(model.Recipe.RecipeId);
 
-                    PictureUpload(model, file);
-                    RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
+                //RecipeViewModel model = GetRecipeViewModelByRecipeId(id);
+
+                //if (ModelState.IsValid)
+                //{
+                //    db.Entry(model.Recipe).State = EntityState.Modified;
+
+                //    foreach (Ingredient ingredient in model.Ingredients)
+                //    {
+                //        db.Entry(ingredient).State = EntityState.Modified;
+                //    }
+
+                //    PictureUpload(model, file);
+                RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
+                //    db.SaveChanges();
+                //    return RedirectToAction("Index");
+                //}
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception e)
             {
-                return View(GetRecipeViewModelByRecipeId(id));
+                var exception = e;
+                return View(model);
             }
         }
 
@@ -145,6 +152,13 @@ namespace WebCookbook.Controllers
         public PartialViewResult AddIngredient(RecipeViewModel model)
         {
             RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
+            return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
+        }
+
+        public PartialViewResult AddIngredientEdit(RecipeViewModel model)
+        {
+            RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
+            var ingredients = model.Ingredients;
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
     }
