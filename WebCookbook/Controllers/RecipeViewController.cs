@@ -30,8 +30,15 @@ namespace WebCookbook.Controllers
         // GET: RecipeView/Create
         public ActionResult Create()
         {
-            RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
-            return View(new RecipeViewModel());
+            if (User.Identity.IsAuthenticated)
+            {
+                RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
+                return View(new RecipeViewModel());
+            }
+            else
+            {
+                return View("Index",db.Recipes);
+            }
         }
 
         // POST: RecipeView/Create
@@ -44,13 +51,14 @@ namespace WebCookbook.Controllers
                 {
                     ingredient.Recipe = completeRecipe.Recipe;
                     completeRecipe.Recipe.Ingredients.Add(ingredient);
-
+                    
                     if (ModelState.IsValid)
                     {
                         db.Ingredients.Add(ingredient);
                     }
                 }
-
+                var test = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                completeRecipe.Recipe.User = test;
                 PictureUpload(completeRecipe, file);
                 RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
                 db.SaveChanges();
@@ -66,7 +74,15 @@ namespace WebCookbook.Controllers
         public ActionResult Edit(int id)
         {
             RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
-            return View(GetRecipeViewModelByRecipeId(id));
+            RecipeViewModel recipe = GetRecipeViewModelByRecipeId(id); //user of recipe will be null?
+            if (User.Identity.IsAuthenticated && User.Equals(recipe.Recipe.User))
+            {
+                return View(recipe);
+            }
+            else
+            {
+                return View("Index", db.Recipes);
+            }
         }
 
         // POST: RecipeView/Edit/5
@@ -109,7 +125,15 @@ namespace WebCookbook.Controllers
         // GET: RecipeView/Delete/5
         public ActionResult Delete(int id)
         {
-            return View(GetRecipeViewModelByRecipeId(id));
+            RecipeViewModel recipe = GetRecipeViewModelByRecipeId(id);
+            if (User.Identity.IsAuthenticated && User.Equals(recipe.Recipe.User))
+            {
+                return View(recipe);
+            }
+            else
+            {
+                return View("Index", db.Recipes);
+            }
         }
 
         // POST: RecipeView/Delete/5
