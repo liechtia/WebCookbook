@@ -26,12 +26,38 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Recipe.InitialServings)
-            <input type="number" id="initialServingsId" value=@Model.Recipe.InitialServings/>
+            
+            <div id="initialServingsId">
+                @Html.DisplayFor(model => model.Recipe.InitialServings)
+            </div>
+            <input type="number" id="ServingsId" value=@Model.Recipe.InitialServings/>
+            @{ 
+                int nrOfIngr = 0;
+                foreach(var item in Model.Ingredients)
+                {
+                    nrOfIngr++;
+                }
+            }
             <button type="button"
-                    onclick="var initialServ = document.getElementById('initialServingsId').value;
-    test2 = document.getElementById('amountID').innerText;
-    document.getElementById('amountID').innerHTML = initialServ * test2">
+                    onclick="var initialServ = document.getElementById('initialServingsId').innerText;
+    servings = document.getElementById('ServingsId').value;
+    if(servings<1)
+                    {
+                    return;
+                    }
+    lastServing = document.getElementById('ServingsId').defaultValue;
+    if (isNaN(lastServing))
+        lastServing = 1;
+    max = @nrOfIngr
+    for(i=1;i<=max;i++)
+    {
+        astring1 = 'amountID';
+        astring2 = astring1.concat(i);
+        fieldAmount = document.getElementById(astring2).innerText;
+        document.getElementById(astring2).innerHTML = servings / initialServ * fieldAmount/ lastServing;
+    }
+    document.getElementById('ServingsId').defaultValue = servings / initialServ;
+    ">
                 Change Values
             </button>
         </dd>
@@ -59,10 +85,13 @@
                         Ingredient name: 
                     </td>
                 </tr>
+                @{ int i = 0;}
                 @foreach (var item in Model.Ingredients)
                 {
+                    i = i + 1;
                     <tr>
-                        <td id="amountID">
+
+                        <td id="@string.Format("amountID{0}", i)">
                             @item.AmountPerInitialServing
                         </td>
                         <td>
