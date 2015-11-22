@@ -19,12 +19,18 @@ namespace WebCookbook.Migrations
 
         protected override void Seed(WebCookbook.Models.ApplicationDbContext context)
         {
-            if(!context.Users.Any(u => u.UserName == "user"))
+            if(!context.Users.Any(u => u.UserName == "admin"))
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var user = new ApplicationUser { UserName = "user" };
+                var user = new ApplicationUser { UserName = "admin", Email = "admin@admin.ch" };
+                //IdentityRole role = new IdentityRole("admin");
+                //IdentityUserRole userRole = new IdentityUserRole();
+                //user.Roles.Add(userRole);
+                //role.Users.Add(userRole);
+                //context.Roles.Add(role);
                 manager.Create(user, "password");
+                
             }
             var IngredientsA = new List<Ingredient>();
             IngredientsA.Add(new Ingredient { AmountPerInitialServing = 150, Measurement = "mg", IngredientName = "Mehl" });

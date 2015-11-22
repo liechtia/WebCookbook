@@ -28,21 +28,16 @@ namespace WebCookbook.Controllers
         }
 
         // GET: RecipeView/Create
+        [Authorize]
         public ActionResult Create()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
-                return View(new RecipeViewModel());
-            }
-            else
-            {
-                return View("Index",db.Recipes);
-            }
+            RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
+            return View(new RecipeViewModel());
         }
 
         // POST: RecipeView/Create
         [HttpPost]
+        [Authorize]
         public ActionResult Create(RecipeViewModel completeRecipe, HttpPostedFileBase file)
         {
             try
@@ -57,8 +52,9 @@ namespace WebCookbook.Controllers
                         db.Ingredients.Add(ingredient);
                     }
                 }
-                var test = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
-                completeRecipe.Recipe.User = test;
+                var appUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                completeRecipe.Recipe.User = appUser;
+                appUser.Recipes.Add(completeRecipe.Recipe);
                 PictureUpload(completeRecipe, file);
                 RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
                 db.SaveChanges();
@@ -71,11 +67,12 @@ namespace WebCookbook.Controllers
         }
 
         // GET: RecipeView/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
             RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
             RecipeViewModel recipe = GetRecipeViewModelByRecipeId(id); //user of recipe will be null?
-            if (User.Identity.IsAuthenticated && User.Equals(recipe.Recipe.User))
+            if (checkForEditDeleteRights(recipe))
             {
                 return View(recipe);
             }
@@ -87,6 +84,7 @@ namespace WebCookbook.Controllers
 
         // POST: RecipeView/Edit/5
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(RecipeViewModel model, HttpPostedFileBase file)
         {
             try
@@ -123,10 +121,11 @@ namespace WebCookbook.Controllers
         }
 
         // GET: RecipeView/Delete/5
+        [Authorize]
         public ActionResult Delete(int id)
         {
             RecipeViewModel recipe = GetRecipeViewModelByRecipeId(id);
-            if (User.Identity.IsAuthenticated && User.Equals(recipe.Recipe.User))
+            if (checkForEditDeleteRights(recipe))
             {
                 return View(recipe);
             }
@@ -138,6 +137,7 @@ namespace WebCookbook.Controllers
 
         // POST: RecipeView/Delete/5
         [HttpPost]
+        [Authorize]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
@@ -184,6 +184,27 @@ namespace WebCookbook.Controllers
             RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
             var ingredients = model.Ingredients;
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
+        }
+
+        private Boolean checkForEditDeleteRights(RecipeViewModel recipe)
+        {
+            ApplicationUser appUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name); // get current user
+            var adminRole = db.Roles.FirstOrDefault(x => x.Name == "admin");
+            bool isAdmin = false;
+            if (adminRole != null)
+            {
+                var usersWithAdminRole = adminRole.Users.FirstOrDefault(x => x.UserId == appUser.Id);
+                if (usersWithAdminRole != null)
+                    isAdmin = true;
+            }
+            if (User.Identity.IsAuthenticated && (appUser.Equals(recipe.Recipe.User) || isAdmin))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
