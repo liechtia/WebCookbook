@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using WebCookbook.Authorization;
 using WebCookbook.Models;
 
 namespace WebCookbook.Controllers
@@ -67,19 +68,11 @@ namespace WebCookbook.Controllers
         }
 
         // GET: RecipeView/Edit/5
-        [Authorize]
-        public ActionResult Edit(int id)
+        [EditDeleteAuthorize]
+        public ActionResult Edit(RecipeViewModel model)
         {
             RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
-            RecipeViewModel recipe = GetRecipeViewModelByRecipeId(id); //user of recipe will be null?
-            if (checkForEditDeleteRights(recipe))
-            {
-                return View(recipe);
-            }
-            else
-            {
-                return View("Index", db.Recipes);
-            }
+            return View(model);
         }
 
         // POST: RecipeView/Edit/5
@@ -121,18 +114,10 @@ namespace WebCookbook.Controllers
         }
 
         // GET: RecipeView/Delete/5
-        [Authorize]
-        public ActionResult Delete(int id)
+        [EditDeleteAuthorize]
+        public ActionResult Delete(RecipeViewModel model)
         {
-            RecipeViewModel recipe = GetRecipeViewModelByRecipeId(id);
-            if (checkForEditDeleteRights(recipe))
-            {
-                return View(recipe);
-            }
-            else
-            {
-                return View("Index", db.Recipes);
-            }
+            return View(model);
         }
 
         // POST: RecipeView/Delete/5
@@ -186,25 +171,5 @@ namespace WebCookbook.Controllers
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
 
-        private Boolean checkForEditDeleteRights(RecipeViewModel recipe)
-        {
-            ApplicationUser appUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name); // get current user
-            var adminRole = db.Roles.FirstOrDefault(x => x.Name == "admin");
-            bool isAdmin = false;
-            if (adminRole != null)
-            {
-                var usersWithAdminRole = adminRole.Users.FirstOrDefault(x => x.UserId == appUser.Id);
-                if (usersWithAdminRole != null)
-                    isAdmin = true;
-            }
-            if (User.Identity.IsAuthenticated && (appUser.Equals(recipe.Recipe.User) || isAdmin))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }
