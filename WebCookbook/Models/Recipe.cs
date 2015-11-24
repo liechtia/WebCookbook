@@ -14,6 +14,7 @@ namespace WebCookbook.Models
             Ingredients = new List<Ingredient>();
         }
 
+        [Key]
         public int RecipeId { get; set; }
         public string Title { get; set; }
         public int InitialServings { get; set; }
@@ -27,9 +28,5 @@ namespace WebCookbook.Models
         public ApplicationUser User { get; set; }
 
         public virtual ICollection<Ingredient> Ingredients { get; set; }
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

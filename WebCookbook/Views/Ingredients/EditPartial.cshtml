@@ -1,0 +1,41 @@
+﻿@using WebCookbook.Models
+@model WebCookbook.Models.Ingredient
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<table>
+    <tbody>
+    <tr>
+        <td>
+            @if (RecipeViewModel.IngredientCounter.Instance.IngredientCount == 0)
+            {
+                @Html.Label("Amount:")
+            }
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AmountPerInitialServing, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.AmountPerInitialServing, "", new {@class = "text-danger"})
+            </div>
+        </td>
+        <td>
+            @if (RecipeViewModel.IngredientCounter.Instance.IngredientCount == 0)
+            {
+                @Html.Label("Measurement:")
+            }
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Measurement, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Measurement, "", new {@class = "text-danger"})
+            </div>
+        </td>
+        <td>
+            @if (RecipeViewModel.IngredientCounter.Instance.IngredientCount == 0)
+            {
+                @Html.Label("Ingredient:")
+            }
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IngredientName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.IngredientName, "", new {@class = "text-danger"})
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

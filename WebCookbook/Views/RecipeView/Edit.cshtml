@@ -40,12 +40,12 @@
                 @{
                     foreach (Ingredient ingredient in Model.Ingredients)
                     {
-                        Html.RenderPartial("~/Views/Ingredients/CreatePartial.cshtml", Model);
+                        Html.RenderPartial("~/Views/Ingredients/EditPartial.cshtml", ingredient);
                         RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
                     }
                 }
             </div>
-            @Html.ActionLink("Add another...", "AddIngredientEdit", null, new {id = "addItem", model = Model})
+            @Html.ActionLink("Add another...", "AddIngredientEdit", null, new {id = "addItem"})
 
             <script>
                 $("#addItem").click(function() {
@@ -68,11 +68,17 @@
         </div>
 
         <div>
-            <img src=@Model.Recipe.PictureUrl/>
-
+            <img src=@Model.Recipe.PictureUrl style="max-width: 200px; width: 100%;"/>
+        </div>
+        <div>
             @Html.LabelFor(m => m.ImageUpload)
             @Html.HiddenFor(m => m.ImageUpload)
-            <input type="file" name="File"/>
+            <input type="file" name="File" />
+        </div>
+
+        <div>
+           @Html.CheckBox("deleteImage")
+           Delete image
         </div>
 
         <div class="form-group">

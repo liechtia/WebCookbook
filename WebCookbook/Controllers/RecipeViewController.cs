@@ -8,17 +8,22 @@ using System.Web;
 using System.Web.Mvc;
 using WebCookbook.Authorization;
 using WebCookbook.Models;
+using static System.String;
 
 namespace WebCookbook.Controllers
 {
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class RecipeViewController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         private RecipeViewModel GetRecipeViewModelByRecipeId(int? id)
         {
-            Recipe recipe = db.Recipes.Find(id);
-            RecipeViewModel model = new RecipeViewModel() { Recipe = recipe, Ingredients = recipe.Ingredients.ToList() };
+            db = new ApplicationDbContext();
+            Recipe recipe = db.Recipes.FirstOrDefault(r => r.RecipeId == id);
+            IQueryable<Ingredient> ingredients = db.Ingredients.Where(i => i.Recipe.RecipeId == id);
+
+            RecipeViewModel model = new RecipeViewModel() { Recipe = recipe, Ingredients = ingredients.ToList() };
             return model;
         }
 
@@ -71,48 +76,76 @@ namespace WebCookbook.Controllers
         [EditDeleteAuthorize]
         public ActionResult Edit(RecipeViewModel model)
         {
+            RecipeViewModel recipeViewModel = GetRecipeViewModelByRecipeId(model.Recipe.RecipeId);
             RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
-            return View(model);
+            return View(recipeViewModel);
+            //return View(model);
         }
 
-        // POST: RecipeView/Edit/5
         [HttpPost]
         [Authorize]
-        public ActionResult Edit(RecipeViewModel model, HttpPostedFileBase file)
+        public ActionResult Edit(RecipeViewModel recipeViewModel, HttpPostedFileBase file, bool deleteImage)
         {
             try
             {
-                IList<Ingredient> ingredients = model.Ingredients;
-                Recipe recipe = model.Recipe;
+                IList<Ingredient> ingredients = recipeViewModel.Ingredients;
 
-                var recipeViewModelByRecipeId = GetRecipeViewModelByRecipeId(model.Recipe.RecipeId);
+                RecipeViewModel recipeViewModelByRecipeId = GetRecipeViewModelByRecipeId(recipeViewModel.Recipe.RecipeId);
 
-                //RecipeViewModel model = GetRecipeViewModelByRecipeId(id);
+                if (ModelState.IsValid)
+                {
+                    recipeViewModelByRecipeId.Recipe.Title = recipeViewModel.Recipe.Title;
+                    recipeViewModelByRecipeId.Recipe.Instructions = recipeViewModel.Recipe.Instructions;
+                    recipeViewModelByRecipeId.Recipe.InitialServings = recipeViewModel.Recipe.InitialServings;
 
-                //if (ModelState.IsValid)
-                //{
-                //    db.Entry(model.Recipe).State = EntityState.Modified;
+                    IList<Ingredient> toDelete = recipeViewModelByRecipeId.Recipe.Ingredients.ToList();
 
-                //    foreach (Ingredient ingredient in model.Ingredients)
-                //    {
-                //        db.Entry(ingredient).State = EntityState.Modified;
-                //    }
+                    foreach (Ingredient ingredient in toDelete)
+                    {
+                        db.Ingredients.Remove(ingredient);
+                        
+                        //Ingredient loadedIngredient = recipeViewModel.Ingredients.FirstOrDefault(i => i.IngredientId == ingredient.IngredientId);
+                        //ingredient.IngredientName = loadedIngredient.IngredientName;
+                        //ingredient.AmountPerInitialServing = loadedIngredient.AmountPerInitialServing;
+                        //ingredient.Measurement = loadedIngredient.Measurement;
+                        //db.Entry(ingredient).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                    foreach (Ingredient ingredient in ingredients)
+                    {
+                        //db.Ingredients.Add(ingredient);
+                        ingredient.Recipe = recipeViewModelByRecipeId.Recipe;
+                        recipeViewModelByRecipeId.Recipe.Ingredients.Add(ingredient);
+                    }
 
-                //    PictureUpload(model, file);
-                RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
-                //    db.SaveChanges();
-                //    return RedirectToAction("Index");
-                //}
+                    db.Entry(recipeViewModelByRecipeId.Recipe).State = EntityState.Modified;
 
-                return RedirectToAction("Index");
+                    db.SaveChanges();
+                    RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
+
+                    if (file != null && !deleteImage)
+                    {
+                        string url = PictureUpload(recipeViewModelByRecipeId, file);
+                        recipeViewModel.Recipe.PictureUrl = url;
+                        db.SaveChanges();
+                        RedirectToAction("Index");
+                    }
+                    if (deleteImage)
+                    {
+                        recipeViewModel.Recipe.PictureUrl = null;
+                        recipeViewModelByRecipeId.Recipe.PictureUrl = null;
+                    }
+                }
+
+                return RedirectToAction("Index", recipeViewModelByRecipeId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                var exception = e;
-                return View(model);
+                string msg = e.Message;
+                return View();
             }
         }
-
+       
         // GET: RecipeView/Delete/5
         [EditDeleteAuthorize]
         public ActionResult Delete(RecipeViewModel model)
@@ -145,17 +178,22 @@ namespace WebCookbook.Controllers
         }
 
         [HttpPost]
-        public void PictureUpload(RecipeViewModel model, HttpPostedFileBase file)
+        public string PictureUpload(RecipeViewModel model, HttpPostedFileBase file)
         {
             if (file != null)
             {
-                string fileName = string.Format(Guid.NewGuid() + Path.GetExtension(file.FileName));
+                //string fileName = Format("Image" + DateTime.Now.Ticks + Path.GetExtension(file.FileName));
+                string fileName = Format(Guid.NewGuid() + Path.GetExtension(file.FileName));
                 string uploadDir = "/Images";
                 var imagePath = Path.Combine(Server.MapPath(uploadDir), fileName);
                 var imageUrl = Path.Combine(uploadDir, fileName);
                 file.SaveAs(imagePath);
                 model.Recipe.PictureUrl = imageUrl;
+
+                return imageUrl;
             }
+
+            return Empty;
         }
 
         public PartialViewResult AddIngredient(RecipeViewModel model)
@@ -167,9 +205,7 @@ namespace WebCookbook.Controllers
         public PartialViewResult AddIngredientEdit(RecipeViewModel model)
         {
             RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
-            var ingredients = model.Ingredients;
-            return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
+            return PartialView("~/Views/Ingredients/EditPartial.cshtml", new Ingredient());
         }
-
     }
 }
