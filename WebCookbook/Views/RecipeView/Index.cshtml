@@ -8,7 +8,16 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "RecipeView")
+    @{
+        if (User.Identity.IsAuthenticated)
+        {
+            @Html.ActionLink("Create New", "Create", "RecipeView");
+        }
+        else
+        {
+        <p>Please log in to create a recipe!</p>
+        }
+    }
 </p>
 <table class="table">
     <tr>
