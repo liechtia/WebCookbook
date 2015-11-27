@@ -85,7 +85,6 @@ namespace WebCookbook.Controllers
             RecipeViewModel recipeViewModel = GetRecipeViewModelByRecipeId(model.Recipe.RecipeId);
             RecipeViewModel.IngredientCounter.Instance.IngredientCount = -1;
             return View(recipeViewModel);
-            //return View(model);
         }
 
         [HttpPost]
@@ -113,7 +112,6 @@ namespace WebCookbook.Controllers
                     db.SaveChanges();
                     foreach (Ingredient ingredient in ingredients)
                     {
-                        //db.Ingredients.Add(ingredient);
                         ingredient.Recipe = recipeViewModelByRecipeId.Recipe;
                         recipeViewModelByRecipeId.Recipe.Ingredients.Add(ingredient);
                     }
@@ -134,6 +132,7 @@ namespace WebCookbook.Controllers
                     {
                         recipeViewModel.Recipe.PictureUrl = null;
                         recipeViewModelByRecipeId.Recipe.PictureUrl = null;
+                        db.SaveChanges();
                     }
                 }
 
@@ -182,7 +181,6 @@ namespace WebCookbook.Controllers
         {
             if (file != null)
             {
-                //string fileName = Format("Image" + DateTime.Now.Ticks + Path.GetExtension(file.FileName));
                 string fileName = Format(Guid.NewGuid() + Path.GetExtension(file.FileName));
                 string uploadDir = "/Images";
                 var imagePath = Path.Combine(Server.MapPath(uploadDir), fileName);

@@ -255,12 +255,10 @@
     <Content Include="Views\RecipeView\Index.cshtml" />
     <Content Include="Views\Ingredients\CreatePartial.cshtml" />
     <Content Include="Views\RecipeView\Create.cshtml" />
-    <Content Include="Views\RecipeView\PictureUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
-    <Folder Include="Views\Recipes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
