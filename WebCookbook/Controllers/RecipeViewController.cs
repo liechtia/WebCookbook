@@ -50,6 +50,7 @@ namespace WebCookbook.Controllers
         // POST: RecipeView/Create
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(RecipeViewModel completeRecipe, HttpPostedFileBase file)
         {
             try
@@ -89,6 +90,7 @@ namespace WebCookbook.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(RecipeViewModel recipeViewModel, HttpPostedFileBase file, bool deleteImage)
         {
             try
@@ -155,6 +157,7 @@ namespace WebCookbook.Controllers
         // POST: RecipeView/Delete/5
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
@@ -177,6 +180,7 @@ namespace WebCookbook.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public string PictureUpload(RecipeViewModel model, HttpPostedFileBase file)
         {
             if (file != null)
