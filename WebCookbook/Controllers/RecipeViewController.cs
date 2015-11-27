@@ -30,7 +30,13 @@ namespace WebCookbook.Controllers
         // GET: RecipeView
         public ActionResult Index()
         {
-            return View(db.Recipes);
+            List<RecipeViewModel> modelList = new List<RecipeViewModel>();
+            foreach (Recipe recipe in db.Recipes)
+            {
+                RecipeViewModel model = GetRecipeViewModelByRecipeId(recipe.RecipeId);
+                modelList.Add(model);
+            }
+            return View(modelList);
         }
 
         // GET: RecipeView/Create
@@ -77,7 +83,7 @@ namespace WebCookbook.Controllers
         public ActionResult Edit(RecipeViewModel model)
         {
             RecipeViewModel recipeViewModel = GetRecipeViewModelByRecipeId(model.Recipe.RecipeId);
-            RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
+            RecipeViewModel.IngredientCounter.Instance.IngredientCount = -1;
             return View(recipeViewModel);
             //return View(model);
         }
@@ -103,12 +109,6 @@ namespace WebCookbook.Controllers
                     foreach (Ingredient ingredient in toDelete)
                     {
                         db.Ingredients.Remove(ingredient);
-                        
-                        //Ingredient loadedIngredient = recipeViewModel.Ingredients.FirstOrDefault(i => i.IngredientId == ingredient.IngredientId);
-                        //ingredient.IngredientName = loadedIngredient.IngredientName;
-                        //ingredient.AmountPerInitialServing = loadedIngredient.AmountPerInitialServing;
-                        //ingredient.Measurement = loadedIngredient.Measurement;
-                        //db.Entry(ingredient).State = EntityState.Modified;
                     }
                     db.SaveChanges();
                     foreach (Ingredient ingredient in ingredients)
@@ -202,10 +202,12 @@ namespace WebCookbook.Controllers
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
 
-        public PartialViewResult AddIngredientEdit(RecipeViewModel model)
+        public PartialViewResult AddIngredientEdit(int? recipeId)
         {
+            RecipeViewModel model = GetRecipeViewModelByRecipeId(recipeId);
+            model.Ingredients.Add(new Ingredient() {Recipe = model.Recipe});
             RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
-            return PartialView("~/Views/Ingredients/EditPartial.cshtml", new Ingredient());
+            return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
     }
 }

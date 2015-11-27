@@ -19,9 +19,6 @@ namespace WebCookbook.Models
             private static IngredientCounter instance;
             public int IngredientCount { get; set; }
 
-            [DataType(DataType.Upload)]
-            HttpPostedFileBase ImageUpload { get; set; }
-
             private IngredientCounter()
             {
                 IngredientCount = 0;
@@ -38,6 +35,7 @@ namespace WebCookbook.Models
                     return instance;
                 }
             }
+
         }
     }
 }

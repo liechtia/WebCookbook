@@ -40,7 +40,9 @@
                     Html.RenderPartial("~/Views/Ingredients/CreatePartial.cshtml", Model);
                 }
             </div>
-            @Html.ActionLink("Add another...", "AddIngredient", null, new {id = "addItem", model = Model})
+
+            <div id=" editorRows">
+                @Html.ActionLink("Add another...", "AddIngredient", null, new {id = "addItem", model = Model})
 
             <script>
                 $("#addItem").click(function() {
@@ -52,6 +54,7 @@
                     return false;
                 });
             </script>
+            </div>
         </div>
 
         <div class="form-group">
