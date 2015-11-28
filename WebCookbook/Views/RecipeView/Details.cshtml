@@ -39,7 +39,7 @@
                 }
             }
             <button type="button"
-                    onclick="var initialServ = document.getElementById('initialServingsId').innerText;
+                    onclick="var initialServ = document.getElementById('initialServingsId').innerHTML;
     servings = document.getElementById('ServingsId').value;
     if(servings<1)
                     {
@@ -53,7 +53,7 @@
     {
         astring1 = 'amountID';
         astring2 = astring1.concat(i);
-        fieldAmount = document.getElementById(astring2).innerText;
+        fieldAmount = document.getElementById(astring2).innerHTML;
         document.getElementById(astring2).innerHTML = servings / initialServ * fieldAmount/ lastServing;
     }
     document.getElementById('ServingsId').defaultValue = servings / initialServ;
