@@ -28,7 +28,7 @@
         <td>
             @if (RecipeViewModel.IngredientCounter.Instance.IngredientCount == 0)
             {
-                <p>I Ingredient: </p>
+                <p>Ingredient: </p>
             }
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Ingredients[RecipeViewModel.IngredientCounter.Instance.IngredientCount].IngredientName, new {htmlAttributes = new {@class = "form-control"}})
