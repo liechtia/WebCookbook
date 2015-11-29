@@ -73,8 +73,9 @@ namespace WebCookbook.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception e)
             {
+                Exception test = e;
                 return View();
             }
         }
@@ -186,8 +187,14 @@ namespace WebCookbook.Controllers
             if (file != null)
             {
                 string fileName = Format(Guid.NewGuid() + Path.GetExtension(file.FileName));
-                string uploadDir = "/Images";
-                var imagePath = Path.Combine(Server.MapPath(uploadDir), fileName);
+                string uploadDir = Path.GetTempPath();
+                var imagePath = Path.Combine(uploadDir, fileName);
+#if DEBUG
+                uploadDir = @"\Images";
+                imagePath = Path.Combine(Server.MapPath(uploadDir), fileName);
+#endif
+
+
                 var imageUrl = Path.Combine(uploadDir, fileName);
                 file.SaveAs(imagePath);
                 model.Recipe.PictureUrl = imageUrl;
