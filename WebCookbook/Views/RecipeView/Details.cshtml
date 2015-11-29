@@ -14,30 +14,22 @@
             <div id="initialServingsId">
                 Initial Servings: @Html.DisplayFor(model => model.Recipe.InitialServings)
             </div>
-            <br />
+            <br/>
             <p>Change amount of servings:</p>
-            <input type="number" id="ServingsId" value=@Model.Recipe.InitialServings />
+            <input type="number" id="ServingsId" value=@Model.Recipe.InitialServings/>
             <button type="button"
-                    onclick="var initialServ = @Model.Recipe.InitialServings;
-                    servings = document.getElementById('ServingsId').value; 
-                    max = @Model.Ingredients.Count; 
-                    for (i = 0; i < max; i++) { 
-                    astring1 = 'amountID'; astring2 = astring1.concat(i);
-                    initial1 = 'initialAmountID'; initial2 = initial1.concat(i);
-                    fieldAmount = document.getElementById(initial2).innerText;
-                    document.getElementById(astring2).innerText = fieldAmount / initialServ * servings; }
-                    document.getElementById('ServingsId').defaultValue = initialServ; ">
+                    onclick="var initialServ = @Model.Recipe.InitialServings; servings = document.getElementById('ServingsId').value; max = @Model.Ingredients.Count; for (i = 0; i < max; i++) { astring1 = 'amountID'; astring2 = astring1.concat(i); initial1 = 'initialAmountID'; initial2 = initial1.concat(i); fieldAmount = document.getElementById(initial2).innerText; document.getElementById(astring2).innerText = fieldAmount / initialServ * servings; } document.getElementById('ServingsId').defaultValue = initialServ; ">
                 Change Values
             </button>
-            <br />
-            <br />
+            <br/>
+            <br/>
             @Html.DisplayNameFor(model => model.Ingredients)
             <table>
                 @{ int i = 0;}
                 @foreach (var item in Model.Ingredients)
                 {
                     <tr>
-                        <td id="@($"initialAmountID{i}")" style="display:none">
+                        <td id="@($"initialAmountID{i}")" style="display: none">
                             @item.AmountPerInitialServing
                         </td>
                         <td id="@($"amountID{i}")">
@@ -53,17 +45,17 @@
                     i++;
                 }
             </table>
-        </dd>
-        <br/>
-        <div>
-            @Html.DisplayNameFor(model => model.Recipe.Instructions)
             <br/>
-            @Html.DisplayFor(model => model.Recipe.Instructions)
-        </div>
-        <br/>
-        <div>
-            <img src=@Model.Recipe.PictureUrl alt=@Model.Recipe.PictureUrl style="max-width: 300px; width: 100%;"/>
-        </div>
+            <div>
+                @Html.DisplayNameFor(model => model.Recipe.Instructions)
+                <br/>
+                @Html.DisplayFor(model => model.Recipe.Instructions)
+            </div>
+            <br/>
+            <div>
+                <img src=@Model.Recipe.PictureUrl alt=@Model.Recipe.PictureUrl style="max-width: 300px; width: 100%;"/>
+            </div>
+        </dd>
     </div>
 </div>
 
