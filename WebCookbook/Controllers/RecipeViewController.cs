@@ -81,6 +81,7 @@ namespace WebCookbook.Controllers
             }
             catch
             {
+                RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
                 return View();
             }
         }
@@ -92,7 +93,7 @@ namespace WebCookbook.Controllers
             RecipeViewModel recipeViewModel = GetRecipeViewModelByRecipeId(model.Recipe.RecipeId);
             //the counter here has to be -1 because it will be incremented in a loop
             //i know it's ugly but i tried to get the ingredient stuff to work for about 40 hours (yes, i was surprised myself)
-            RecipeViewModel.IngredientCounter.Instance.IngredientCount = -1;
+            RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
             return View(recipeViewModel);
         }
 
@@ -154,9 +155,9 @@ namespace WebCookbook.Controllers
 
                 return RedirectToAction("Index", recipeViewModelByRecipeId);
             }
-            catch (Exception e)
+            catch
             {
-                string msg = e.Message;
+                RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
                 return View();
             }
         }
@@ -204,7 +205,7 @@ namespace WebCookbook.Controllers
                 string uploadDir = @"\Images";
                 if (!Directory.Exists(Server.MapPath(uploadDir)))
                 {
-                    DirectoryInfo directoryInfo = Directory.CreateDirectory(Server.MapPath("uploadDir"));
+                    Directory.CreateDirectory(Server.MapPath(uploadDir));
                 }
 
                 var imagePath = Path.Combine(Server.MapPath(uploadDir), fileName);
