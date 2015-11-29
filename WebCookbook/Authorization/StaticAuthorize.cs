@@ -26,6 +26,10 @@ namespace WebCookbook.Authorization
         private static Boolean checkForEditDeleteRights(RecipeViewModel recipe,ApplicationDbContext db, string UserName)
         {
             ApplicationUser appUser = db.Users.FirstOrDefault(x => x.UserName == UserName); // get current user
+            if(appUser == null)
+            {
+                return false;
+            }
             var adminRole = db.Roles.FirstOrDefault(x => x.Name == "admin");
             bool isAdmin = false;
             if (adminRole != null)
