@@ -1,97 +1,46 @@
-﻿@model WebCookbook.Models.RecipeViewModel
+﻿@using System.Web.UI.WebControls
+@model WebCookbook.Models.RecipeViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.Recipe.Title;
 }
 
-<h2>Details</h2>
+<h2>@Model.Recipe.Title</h2>
 
 <div>
-    <h4>Recipe</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Recipe.Title)
-        </dt>
-
+    <hr/>
+    <div class="dl-horizontal">
         <dd>
-            @Html.DisplayFor(model => model.Recipe.Title)
-            <div id="toChange">
-                5
-            </div>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Recipe.InitialServings)
-        </dt>
-
-        <dd>
-            
             <div id="initialServingsId">
-                @Html.DisplayFor(model => model.Recipe.InitialServings)
+                Initial Servings: @Html.DisplayFor(model => model.Recipe.InitialServings)
             </div>
-            <input type="number" id="ServingsId" value=@Model.Recipe.InitialServings/>
-            @{ 
-                int nrOfIngr = 0;
-                foreach(var item in Model.Ingredients)
-                {
-                    nrOfIngr++;
-                }
-            }
+            <br />
+            <p>Change amount of servings:</p>
+            <input type="number" id="ServingsId" value=@Model.Recipe.InitialServings />
             <button type="button"
-                    onclick="var initialServ = document.getElementById('initialServingsId').innerText;
-    servings = document.getElementById('ServingsId').value;
-    if(servings<1)
-                    {
-                    return;
-                    }
-    lastServing = document.getElementById('ServingsId').defaultValue;
-    if (isNaN(lastServing))
-        lastServing = 1;
-    max = @nrOfIngr
-    for(i=1;i<=max;i++)
-    {
-        astring1 = 'amountID';
-        astring2 = astring1.concat(i);
-        fieldAmount = document.getElementById(astring2).innerText;
-        document.getElementById(astring2).innerHTML = servings / initialServ * fieldAmount/ lastServing;
-    }
-    document.getElementById('ServingsId').defaultValue = servings / initialServ;
-    ">
+                    onclick="var initialServ = @Model.Recipe.InitialServings;
+                    servings = document.getElementById('ServingsId').value; 
+                    max = @Model.Ingredients.Count; 
+                    for (i = 0; i < max; i++) { 
+                    astring1 = 'amountID'; astring2 = astring1.concat(i);
+                    initial1 = 'initialAmountID'; initial2 = initial1.concat(i);
+                    fieldAmount = document.getElementById(initial2).innerText;
+                    document.getElementById(astring2).innerText = fieldAmount / initialServ * servings; }
+                    document.getElementById('ServingsId').defaultValue = initialServ; ">
                 Change Values
             </button>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Recipe.Instructions)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Recipe.Instructions)
-        </dd>
-        <dt>
+            <br />
+            <br />
             @Html.DisplayNameFor(model => model.Ingredients)
-        </dt>
-        <dd>
             <table>
-                <tr>
-                    <td>
-                        Amount per initial serving: 
-                    </td>
-                    <td>
-                        Measurement: 
-                    </td>
-                    <td>
-                        Ingredient name: 
-                    </td>
-                </tr>
                 @{ int i = 0;}
                 @foreach (var item in Model.Ingredients)
                 {
-                    i = i + 1;
                     <tr>
-
-                        <td id="@string.Format("amountID{0}", i)">
+                        <td id="@($"initialAmountID{i}")" style="display:none">
+                            @item.AmountPerInitialServing
+                        </td>
+                        <td id="@($"amountID{i}")">
                             @item.AmountPerInitialServing
                         </td>
                         <td>
@@ -101,20 +50,23 @@
                             @Html.DisplayFor(modelItem => item.IngredientName)
                         </td>
                     </tr>
+                    i++;
                 }
             </table>
         </dd>
-        <dt>
-            Picture
-        </dt>
-
-        <dd>
-            <img src=@Model.Recipe.PictureUrl alt=@Model.Recipe.PictureUrl style="max-width: 600px; width: 100%;"/>
-            <p>@Model.Recipe.PictureUrl</p>
-        </dd>
-
-    </dl>
+        <br/>
+        <div>
+            @Html.DisplayNameFor(model => model.Recipe.Instructions)
+            <br/>
+            @Html.DisplayFor(model => model.Recipe.Instructions)
+        </div>
+        <br/>
+        <div>
+            <img src=@Model.Recipe.PictureUrl alt=@Model.Recipe.PictureUrl style="max-width: 300px; width: 100%;"/>
+        </div>
+    </div>
 </div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Recipe.RecipeId }) |
     @Html.ActionLink("Back to List", "Index")
