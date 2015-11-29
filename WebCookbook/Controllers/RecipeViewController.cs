@@ -60,6 +60,12 @@ namespace WebCookbook.Controllers
                 //add ingredients
                 foreach (Ingredient ingredient in completeRecipe.Ingredients)
                 {
+                    if (ingredient.IngredientName == null)
+                    {
+                        completeRecipe.Ingredients.Remove(ingredient);
+                        break;
+                    }
+
                     ingredient.Recipe = completeRecipe.Recipe;
                     completeRecipe.Recipe.Ingredients.Add(ingredient);
                     
@@ -125,9 +131,12 @@ namespace WebCookbook.Controllers
                     db.SaveChanges();
                     foreach (Ingredient ingredient in ingredients)
                     {
-                        //adding the new ingredients that have the changes from the edit form
-                        ingredient.Recipe = recipeViewModelByRecipeId.Recipe;
-                        recipeViewModelByRecipeId.Recipe.Ingredients.Add(ingredient);
+                        if (!string.IsNullOrEmpty(ingredient.IngredientName))
+                        {
+                            //adding the new ingredients that have the changes from the edit form
+                            ingredient.Recipe = recipeViewModelByRecipeId.Recipe;
+                            recipeViewModelByRecipeId.Recipe.Ingredients.Add(ingredient);
+                        }
                     }
 
                     //when setting entity state to modified, it will be saved using the savechanges below

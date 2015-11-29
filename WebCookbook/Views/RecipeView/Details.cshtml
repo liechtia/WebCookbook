@@ -18,9 +18,12 @@
             <p>Change amount of servings:</p>
             <input type="number" id="ServingsId" value=@Model.Recipe.InitialServings/>
             <button type="button"
-                    onclick="
-                    var initialServ = @Model.Recipe.InitialServings;
+                    onclick="var initialServ = @Model.Recipe.InitialServings; 
                     servings = document.getElementById('ServingsId').value; 
+                    if(servings<1)
+                    {
+                    return;
+                    }
                     max = @Model.Ingredients.Count; 
                     for (i = 0; i < max; i++) 
                     { 
