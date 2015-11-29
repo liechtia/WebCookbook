@@ -201,14 +201,13 @@ namespace WebCookbook.Controllers
             {
                 string fileName = Format(Guid.NewGuid() + Path.GetExtension(file.FileName));
                 //uploaded images are deleted in appharbor with each deploy and maybe after a certain amount of time
-                string uploadDir = Path.GetTempPath();
-                var imagePath = Path.Combine(uploadDir, fileName);
-#if DEBUG
-                uploadDir = @"\Images";
-                imagePath = Path.Combine(Server.MapPath(uploadDir), fileName);
-#endif
+                string uploadDir = @"\Images";
+                if (!Directory.Exists(Server.MapPath(uploadDir)))
+                {
+                    DirectoryInfo directoryInfo = Directory.CreateDirectory(Server.MapPath("uploadDir"));
+                }
 
-
+                var imagePath = Path.Combine(Server.MapPath(uploadDir), fileName);
                 var imageUrl = Path.Combine(uploadDir, fileName);
                 file.SaveAs(imagePath);
                 model.Recipe.PictureUrl = imageUrl;
