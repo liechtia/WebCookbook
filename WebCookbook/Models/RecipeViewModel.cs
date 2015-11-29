@@ -13,7 +13,8 @@ namespace WebCookbook.Models
 
         [DataType(DataType.Upload)]
         public HttpPostedFileBase ImageUpload { get; set; }
-
+        
+        //the singleton ingredient counter is used to create and edit several ingredients per recipe dynamically
         public class IngredientCounter
         {
             private static IngredientCounter instance;

@@ -17,6 +17,7 @@ namespace WebCookbook.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        //method to get the model if only the recipeid is known
         private RecipeViewModel GetRecipeViewModelByRecipeId(int? id)
         {
             db = new ApplicationDbContext();
@@ -43,6 +44,7 @@ namespace WebCookbook.Controllers
         [Authorize]
         public ActionResult Create()
         {
+            //ingredient counter singleton has to be 0 so that the ingredients can be added dynamically
             RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
             return View(new RecipeViewModel());
         }
@@ -55,6 +57,7 @@ namespace WebCookbook.Controllers
         {
             try
             {
+                //add ingredients
                 foreach (Ingredient ingredient in completeRecipe.Ingredients)
                 {
                     ingredient.Recipe = completeRecipe.Recipe;
@@ -65,17 +68,19 @@ namespace WebCookbook.Controllers
                         db.Ingredients.Add(ingredient);
                     }
                 }
+                //add user
                 var appUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
                 completeRecipe.Recipe.User = appUser;
                 appUser.Recipes.Add(completeRecipe.Recipe);
+                //add picture
                 PictureUpload(completeRecipe, file);
+                //revert counter again
                 RecipeViewModel.IngredientCounter.Instance.IngredientCount = 0;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch(Exception e)
+            catch
             {
-                Exception test = e;
                 return View();
             }
         }
@@ -85,6 +90,8 @@ namespace WebCookbook.Controllers
         public ActionResult Edit(RecipeViewModel model)
         {
             RecipeViewModel recipeViewModel = GetRecipeViewModelByRecipeId(model.Recipe.RecipeId);
+            //the counter here has to be -1 because it will be incremented in a loop
+            //i know it's ugly but i tried to get the ingredient stuff to work for about 40 hours (yes, i was surprised myself)
             RecipeViewModel.IngredientCounter.Instance.IngredientCount = -1;
             return View(recipeViewModel);
         }
@@ -102,6 +109,7 @@ namespace WebCookbook.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    //the posted edited data has to be changed in the current entity
                     recipeViewModelByRecipeId.Recipe.Title = recipeViewModel.Recipe.Title;
                     recipeViewModelByRecipeId.Recipe.Instructions = recipeViewModel.Recipe.Instructions;
                     recipeViewModelByRecipeId.Recipe.InitialServings = recipeViewModel.Recipe.InitialServings;
@@ -110,15 +118,18 @@ namespace WebCookbook.Controllers
 
                     foreach (Ingredient ingredient in toDelete)
                     {
+                        //since ingredients are in a different db context i will just remove them and add them again
                         db.Ingredients.Remove(ingredient);
                     }
                     db.SaveChanges();
                     foreach (Ingredient ingredient in ingredients)
                     {
+                        //adding the new ingredients that have the changes from the edit form
                         ingredient.Recipe = recipeViewModelByRecipeId.Recipe;
                         recipeViewModelByRecipeId.Recipe.Ingredients.Add(ingredient);
                     }
 
+                    //when setting entity state to modified, it will be saved using the savechanges below
                     db.Entry(recipeViewModelByRecipeId.Recipe).State = EntityState.Modified;
 
                     db.SaveChanges();
@@ -126,6 +137,7 @@ namespace WebCookbook.Controllers
 
                     if (file != null && !deleteImage)
                     {
+                        //editing picture
                         string url = PictureUpload(recipeViewModelByRecipeId, file);
                         recipeViewModel.Recipe.PictureUrl = url;
                         db.SaveChanges();
@@ -133,6 +145,7 @@ namespace WebCookbook.Controllers
                     }
                     if (deleteImage)
                     {
+                        //deleting image if desired
                         recipeViewModel.Recipe.PictureUrl = null;
                         recipeViewModelByRecipeId.Recipe.PictureUrl = null;
                         db.SaveChanges();
@@ -187,6 +200,7 @@ namespace WebCookbook.Controllers
             if (file != null)
             {
                 string fileName = Format(Guid.NewGuid() + Path.GetExtension(file.FileName));
+                //uploaded images are deleted in appharbor with each deploy and maybe after a certain amount of time
                 string uploadDir = Path.GetTempPath();
                 var imagePath = Path.Combine(uploadDir, fileName);
 #if DEBUG
@@ -207,12 +221,16 @@ namespace WebCookbook.Controllers
 
         public PartialViewResult AddIngredient(RecipeViewModel model)
         {
+            //new ingredient
             RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
 
         public PartialViewResult AddIngredientEdit(int? recipeId)
         {
+            //adding an ingredient in the edit form is a bit more complicated as we need the current recipe for this
+            //and make sure the changes of the existing ingredients as well as the new ingredients are saved to the
+            //existing recipe
             RecipeViewModel model = GetRecipeViewModelByRecipeId(recipeId);
             model.Ingredients.Add(new Ingredient() {Recipe = model.Recipe});
             RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
