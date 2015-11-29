@@ -18,7 +18,20 @@
             <p>Change amount of servings:</p>
             <input type="number" id="ServingsId" value=@Model.Recipe.InitialServings/>
             <button type="button"
-                    onclick="var initialServ = @Model.Recipe.InitialServings; servings = document.getElementById('ServingsId').value; max = @Model.Ingredients.Count; for (i = 0; i < max; i++) { astring1 = 'amountID'; astring2 = astring1.concat(i); initial1 = 'initialAmountID'; initial2 = initial1.concat(i); fieldAmount = document.getElementById(initial2).innerText; document.getElementById(astring2).innerText = fieldAmount / initialServ * servings; } document.getElementById('ServingsId').defaultValue = initialServ; ">
+                    onclick="
+                    var initialServ = @Model.Recipe.InitialServings;
+                    servings = document.getElementById('ServingsId').value; 
+                    max = @Model.Ingredients.Count; 
+                    for (i = 0; i < max; i++) 
+                    { 
+                        astring1 = 'amountID'; 
+                        astring2 = astring1.concat(i); 
+                        initial1 = 'initialAmountID'; 
+                        initial2 = initial1.concat(i); 
+                        fieldAmount = document.getElementById(initial2).innerText; 
+                        document.getElementById(astring2).innerText = fieldAmount / initialServ * servings; 
+                    } 
+                    document.getElementById('ServingsId').defaultValue = initialServ; ">
                 Change Values
             </button>
             <br/>
