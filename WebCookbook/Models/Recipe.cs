@@ -12,6 +12,7 @@ namespace WebCookbook.Models
         public Recipe()
         {
             Ingredients = new List<Ingredient>();
+            Ratings = new List<Rating>();
         }
 
         [Key]
@@ -28,5 +29,6 @@ namespace WebCookbook.Models
         public ApplicationUser User { get; set; }
 
         public virtual ICollection<Ingredient> Ingredients { get; set; }
+        public virtual ICollection<Rating> Ratings { get; set; }
     }
 }

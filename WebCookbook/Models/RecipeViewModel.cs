@@ -10,6 +10,7 @@ namespace WebCookbook.Models
     {
         public Recipe Recipe { get; set; }
         public IList<Ingredient> Ingredients { get; set; }
+        public IList<Rating> Ratings { get; set; }
 
         [DataType(DataType.Upload)]
         public HttpPostedFileBase ImageUpload { get; set; }
