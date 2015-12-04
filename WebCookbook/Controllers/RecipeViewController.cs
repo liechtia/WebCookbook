@@ -241,7 +241,11 @@ namespace WebCookbook.Controllers
             //and make sure the changes of the existing ingredients as well as the new ingredients are saved to the
             //existing recipe
             RecipeViewModel model = GetRecipeViewModelByRecipeId(recipeId);
-            model.Ingredients.Add(new Ingredient() {Recipe = model.Recipe});
+            Ingredient ingredient = new Ingredient() {Recipe = model.Recipe};
+            model.Ingredients.Add(ingredient);
+            model.Recipe.Ingredients.Add(ingredient);
+            //without a save-changes here, it is unfortunately not possible to add multiple ingredientsi in edit view
+            db.SaveChanges();
             RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
         }
