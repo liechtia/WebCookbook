@@ -184,6 +184,10 @@
     <Compile Include="Migrations\201511221342081_ApplicationUserWithRecipes.Designer.cs">
       <DependentUpon>201511221342081_ApplicationUserWithRecipes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512051338430_rating.cs" />
+    <Compile Include="Migrations\201512051338430_rating.Designer.cs">
+      <DependentUpon>201512051338430_rating.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -280,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511221342081_ApplicationUserWithRecipes.resx">
       <DependentUpon>201511221342081_ApplicationUserWithRecipes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512051338430_rating.resx">
+      <DependentUpon>201512051338430_rating.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
