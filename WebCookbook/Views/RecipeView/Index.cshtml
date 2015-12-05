@@ -18,6 +18,11 @@
         <p>Please log in to create a recipe!</p>
     }
 }
+@using (Html.BeginForm("Index","RecipeView",FormMethod.Get))
+{
+    <p> Title: @Html.TextBox("SearchString") <br/>
+    <input type="submit" value="Filter"/></p>
+}
 
 <table class="table">
     <tr>

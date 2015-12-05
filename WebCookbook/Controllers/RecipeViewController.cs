@@ -29,10 +29,16 @@ namespace WebCookbook.Controllers
         }
 
         // GET: RecipeView
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             List<RecipeViewModel> modelList = new List<RecipeViewModel>();
-            foreach (Recipe recipe in db.Recipes)
+            var recipes = from r in db.Recipes
+                          select r;
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                recipes = recipes.Where(r => r.Title.Contains(searchString));
+            }
+            foreach (Recipe recipe in recipes)
             {
                 RecipeViewModel model = GetRecipeViewModelByRecipeId(recipe.RecipeId);
                 modelList.Add(model);
