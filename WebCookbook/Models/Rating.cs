@@ -11,6 +11,7 @@ namespace WebCookbook.Models
         [Key]
         public int RatingId { get; set; }
         public ApplicationUser User { get; set; }
+        public Recipe Recipe { get; set; }
         public bool Like { get; set; }
     }
 }

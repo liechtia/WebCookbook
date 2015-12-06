@@ -11,7 +11,7 @@
 @{
     if (User.Identity.IsAuthenticated)
     {
-        @Html.ActionLink("Create New", "Create", "RecipeView")
+        @Html.ActionLink("Create new Recipe", "Create", "RecipeView")
     }
     else
     {
@@ -20,8 +20,8 @@
 }
 @using (Html.BeginForm("Index","RecipeView",FormMethod.Get))
 {
-    <p> Title: @Html.TextBox("SearchString") <br/>
-    <input type="submit" value="Filter"/></p>
+    <p> @Html.TextBox("SearchString") 
+    <input type="submit" value="Search in Titles"/></p>
 }
 
 <table class="table">

@@ -188,6 +188,10 @@
     <Compile Include="Migrations\201512051338430_rating.Designer.cs">
       <DependentUpon>201512051338430_rating.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512061520508_RecipeColumnInRating.cs" />
+    <Compile Include="Migrations\201512061520508_RecipeColumnInRating.Designer.cs">
+      <DependentUpon>201512061520508_RecipeColumnInRating.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -208,10 +212,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Properties\PublishProfiles\WebCookbook %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\WebCookbook %283%29.pubxml" />
-    <None Include="Properties\PublishProfiles\WebCookbook %284%29.pubxml" />
-    <None Include="Properties\PublishProfiles\WebCookbook.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -245,7 +245,6 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
@@ -265,9 +264,11 @@
     <Content Include="Views\Ingredients\CreatePartial.cshtml" />
     <Content Include="Views\RecipeView\Create.cshtml" />
     <Content Include="Views\RecipeView\EditCreatePartial.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -287,6 +288,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512051338430_rating.resx">
       <DependentUpon>201512051338430_rating.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512061520508_RecipeColumnInRating.resx">
+      <DependentUpon>201512061520508_RecipeColumnInRating.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

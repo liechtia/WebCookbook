@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using WebCookbook.Authorization;
 using WebCookbook.Models;
 using static System.String;
@@ -254,6 +255,18 @@ namespace WebCookbook.Controllers
             db.SaveChanges();
             RecipeViewModel.IngredientCounter.Instance.IngredientCount++;
             return PartialView("~/Views/Ingredients/CreatePartial.cshtml", model);
+        }
+
+        public ActionResult LikeDislikeRecipe(int? recipeId, bool like)
+        {
+            RecipeViewModel model = GetRecipeViewModelByRecipeId(recipeId);
+            ApplicationUser appUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+
+            Rating rating = new Rating { User = appUser, Like = like };
+            model.Recipe.Ratings.Add(rating);
+            db.SaveChanges();
+
+            return View("Details", model);
         }
     }
 }

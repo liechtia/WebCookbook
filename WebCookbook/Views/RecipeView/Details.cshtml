@@ -1,4 +1,8 @@
-﻿@using System.Web.UI.WebControls
+﻿@using System.Collections
+@using System.Web.UI.WebControls
+@using Microsoft.AspNet.Identity
+@using WebCookbook.Authorization
+@using WebCookbook.Models
 @model WebCookbook.Models.RecipeViewModel
 
 @{
@@ -10,7 +14,6 @@
 <div>
     <hr/>
     <div class="dl-horizontal">
-        <dd>
             <div id="initialServingsId">
                 Initial Servings: @Html.DisplayFor(model => model.Recipe.InitialServings)
             </div>
@@ -69,9 +72,32 @@
             </div>
             <br/>
             <div>
+                @Html.DisplayNameFor(model => model.Recipe.Ratings)
+                <br/>
+                @if (Model.Recipe.Ratings == null || !Model.Recipe.Ratings.Any())
+                {
+                    <text>no ratings so far!</text>
+                }
+                else
+                {
+                    decimal likes = Model.Recipe.Ratings.Count(rating => rating.Like);
+                    decimal total = Model.Recipe.Ratings.Count;
+                    decimal percentage = (likes/total)*100;
+                    @($"{percentage:0}% out of {total} ratings")
+                }
+                <br/>
+                @if (User.Identity.IsAuthenticated &&
+                 !StaticAuthorize.isAuthorized(Model.Recipe.RecipeId, User) &&
+                 Model.CanLikeRecipe(User.Identity.Name))
+                {
+                    @Html.ActionLink("Like!", "LikeDislikeRecipe", new { recipeId = Model.Recipe.RecipeId, like = true }, new { model = Model }) <text>|</text>
+                    @Html.ActionLink("Dislike!", "LikeDislikeRecipe", new { recipeId = Model.Recipe.RecipeId, like = false }, new { model = Model })
+                }
+            </div>
+            <br/>
+            <div>
                 <img src=@Model.Recipe.PictureUrl alt=@Model.Recipe.PictureUrl style="max-width: 300px; width: 100%;"/>
             </div>
-        </dd>
     </div>
 </div>
 

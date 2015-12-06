@@ -36,6 +36,7 @@ namespace WebCookbook.Models
 
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         public static ApplicationDbContext Create()
         {
@@ -49,6 +50,10 @@ namespace WebCookbook.Models
             modelBuilder.Entity<Ingredient>()
                 .HasRequired(i => i.Recipe)
                 .WithMany(r => r.Ingredients);
+
+            modelBuilder.Entity<Rating>()
+                .HasRequired(r => r.Recipe)
+                .WithMany(r => r.Ratings);
         }
 
         public override int SaveChanges()

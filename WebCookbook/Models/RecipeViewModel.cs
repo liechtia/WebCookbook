@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using Microsoft.Ajax.Utilities;
 
 namespace WebCookbook.Models
 {
@@ -38,6 +40,23 @@ namespace WebCookbook.Models
                 }
             }
 
+        }
+
+        public bool CanLikeRecipe(string userName)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            //lazy loading troubles ;) 
+            IQueryable<Rating> queryable = context.Ratings.Include(r => r.User);
+
+            foreach (Rating rating in queryable)
+            {
+                if (rating.User.UserName == userName)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
