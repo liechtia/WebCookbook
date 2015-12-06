@@ -46,8 +46,7 @@ namespace WebCookbook.Models
         {
             ApplicationDbContext context = new ApplicationDbContext();
             //lazy loading troubles ;) 
-            IQueryable<Rating> queryable = context.Ratings.Include(r => r.User);
-
+            IQueryable<Rating> queryable = context.Ratings.Include(r => r.User).Include(r => r.Recipe).Where(r => r.Recipe.RecipeId == this.Recipe.RecipeId);
             foreach (Rating rating in queryable)
             {
                 if (rating.User.UserName == userName)
